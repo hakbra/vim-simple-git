@@ -133,7 +133,7 @@ function! GitCommit()
 
 	let msg = input('Enter commit message: ')
 
-	execute '!git commit -m' msg
+	execute '!git commit -m \'' msg '\''
 endfunction
 
 function! GitPush()
