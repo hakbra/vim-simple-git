@@ -19,6 +19,11 @@ function! GitStatus()
 		return
 	endif
 
+	if len(a:output_lines) == 1 && a:output_lines[0] =~ 'Not a git repository'
+		echon 'Not a git repository'
+		return
+	endif
+
 	let a:c = 0
 	while a:c < len(a:output_lines)
 		let a:line = a:output_lines[a:c]
@@ -59,8 +64,14 @@ function! GitAdd()
 		return
 	endif
 
+	if len(a:output_lines) == 1 && a:output_lines[0] =~ 'Not a git repository'
+		echon 'Not a git repository'
+		return
+	endif
+
 	let a:all = 0
 	let a:c = 0
+	let a:added = 0
 	while a:c < len(a:output_lines)
 		let a:line = a:output_lines[a:c]
 		let a:file = split(a:line, '\v +')[1]
@@ -69,6 +80,8 @@ function! GitAdd()
 		if a:line[1] == ' '
 			continue
 		endif
+
+		let a:added += 1
 
 		if a:all == 0
 			echon 'Add '.a:file.'? (a/y/n) '
@@ -84,7 +97,11 @@ function! GitAdd()
 		endif
 	endwhile
 	redraw!
-	echon 'Files added'
+	if a:added > 0
+		echon 'Files added'
+	else 
+		echon 'No files to add'
+	endif
 endfunction
 
 function! GitCommit()
@@ -109,14 +126,20 @@ function! GitCommit()
 		return
 	endif
 
+	if len(a:output_lines) == 1 && a:output_lines[0] =~ 'Not a git repository'
+		echon 'Not a git repository'
+		return
+	endif
+
 	let msg = input('Enter commit message: ')
 
-	execute 'silent  !git commit -m' msg
+	execute '!git commit -m' msg
 	redraw!
 	echon 'Commit done'
 endfunction
 
 function! GitPush()
+	echon 'Git push'
 	let s:success = 1
 	function! GitPushError(job_id, data, event)
 		for line in a:data
@@ -139,7 +162,6 @@ function! GitPush()
 
 	call jobstart(['git', 'push'], a:callbacks)
 endfunction
-
 
 noremap <Leader>vs :call GitStatus()<CR>
 noremap <Leader>va :call GitAdd()<CR>
