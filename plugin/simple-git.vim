@@ -134,8 +134,6 @@ function! GitCommit()
 	let msg = input('Enter commit message: ')
 
 	execute '!git commit -m' msg
-	redraw!
-	echon 'Commit done'
 endfunction
 
 function! GitPush()
