@@ -135,6 +135,7 @@ function! GitCommit()
 	let msg = '"'.msg.'"'
 
 	execute 'silent !git commit -m ' msg
+	redraw!
 endfunction
 
 function! GitPush()
