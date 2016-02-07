@@ -10,7 +10,7 @@ function! s:getchar()
 	return a:c
 endfunction
 
-function! GitStatus()
+function! GitStatus() 
 	let a:status_output = system('git status -s')
 	let a:output_lines = split(a:status_output, '\v\n')
 
