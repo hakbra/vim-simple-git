@@ -134,7 +134,7 @@ function! GitCommit()
 	let msg = input('Enter commit message: ')
 	let msg = '"'.msg.'"'
 
-	execute '!git commit -m ' msg
+	execute 'silent !git commit -m ' msg
 endfunction
 
 function! GitPush()
